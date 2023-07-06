@@ -3,34 +3,60 @@ name: Build
 on:
   push:
   schedule:
-    - cron: '0 22 * * *'
+    - cron: '0 0 * * 0'
 
 jobs:
-  macos_build:
-    name: macOS Build
-    runs-on: "macos-11"
-    env:
-      MACOSX_DEPLOYMENT_TARGET: "10.9"
+  windows64_build:
+    name: Windows x86_64 Build
+    runs-on: windows-latest
     steps:
       - name: "checkout repo"
         uses: actions/checkout@v3
       - name: "Install Rust"
         uses: dtolnay/rust-toolchain@stable
-      - name: "Install Rust (ARM)"
-        shell: bash
-        run: "rustup target add aarch64-apple-darwin"
+        with:
+          target: "x86_64-pc-windows-msvc"
       - name: "Build"
         shell: bash
         run: |
           git clone --recursive https://github.com/wez/wezterm
           cd wezterm
           bash ../patch.sh
-          env CI=yes PATH=$PATH ./get-deps
-          cargo build --target x86_64-apple-darwin --all --release
-          cargo build --target aarch64-apple-darwin --all --release
+          cargo build --all --release
           bash ci/deploy.sh
       - name: "Upload artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: "macos"
-          path: "wezterm/WezTerm-*.zip"
+          name: "windows"
+          path: |
+            wezterm/WezTerm-*.zip
+            wezterm/WezTerm-*.exe
+
+  # macos_build:
+  #   name: macOS Build
+  #   runs-on: "macos-11"
+  #   env:
+  #     MACOSX_DEPLOYMENT_TARGET: "10.9"
+  #   steps:
+  #     - name: "checkout repo"
+  #       uses: actions/checkout@v3
+  #     - name: "Install Rust"
+  #       uses: dtolnay/rust-toolchain@stable
+  #     - name: "Install Rust (ARM)"
+  #       shell: bash
+  #       run: "rustup target add aarch64-apple-darwin"
+  #     - name: "Build"
+  #       shell: bash
+  #       run: |
+  #         git clone --recursive https://github.com/wez/wezterm
+  #         cd wezterm
+  #         bash ../patch.sh
+  #         env CI=yes PATH=$PATH ./get-deps
+  #         cargo build --target x86_64-apple-darwin --all --release
+  #         cargo build --target aarch64-apple-darwin --all --release
+  #         bash ci/deploy.sh
+  #     - name: "Upload artifact"
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: "macos"
+  #         path: "wezterm/WezTerm-*.zip"
