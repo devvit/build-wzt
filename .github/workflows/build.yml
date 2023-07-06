@@ -17,8 +17,8 @@ jobs:
       - name: "Update APT"
         shell: bash
         run: |
-          apt-get update
-          apt-get install -y libfuse2
+          sudo apt-get update
+          sudo apt-get install -y libfuse2
       - name: "Build"
         shell: bash
         run: |
