@@ -6,40 +6,75 @@ on:
     - cron: '0 0 * * 0'
 
 jobs:
-  windows64_build:
-    name: Windows x86_64 Build
-    runs-on: windows-latest
+  linux64_build:
+    name: Linux x86_64 Build
+    runs-on: ubuntu-latest
     steps:
       - name: "checkout repo"
         uses: actions/checkout@v3
       - name: "Install Rust"
         uses: dtolnay/rust-toolchain@stable
-        with:
-          target: "x86_64-pc-windows-msvc"
-      - name: "Prebuild"
+      - name: "Update APT"
+        shell: bash
+        run: |
+          apt-get update
+          apt-get install -y libfuse2
+      - name: "Build"
         shell: bash
         run: |
           git clone --recursive https://github.com/wez/wezterm
           cd wezterm
           bash ../patch.sh
-      - name: "Build"
-        shell: cmd
-        run: |
-          cd wezterm
-          PATH C:\Strawberry\perl\bin;%PATH%
+          env CI=yes PATH=$PATH ./get-deps
           cargo build --all --release
-      - name: "Package"
-        shell: bash
-        run: |
-          cd wezterm
           bash ci/deploy.sh
+          bash ci/source-archive.sh
+          bash ci/appimage.sh
       - name: "Upload artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: "windows"
+          name: "ubuntu20.04"
           path: |
-            wezterm/WezTerm-*.zip
-            wezterm/WezTerm-*.exe
+            wezterm/wezterm-*.deb
+            wezterm/wezterm-*.xz
+            wezterm/*src.tar.gz
+            wezterm/*.AppImage
+            wezterm/*.zsync
+
+  # windows64_build:
+  #   name: Windows x86_64 Build
+  #   runs-on: windows-latest
+  #   steps:
+  #     - name: "checkout repo"
+  #       uses: actions/checkout@v3
+  #     - name: "Install Rust"
+  #       uses: dtolnay/rust-toolchain@stable
+  #       with:
+  #         target: "x86_64-pc-windows-msvc"
+  #     - name: "Prebuild"
+  #       shell: bash
+  #       run: |
+  #         git clone --recursive https://github.com/wez/wezterm
+  #         cd wezterm
+  #         bash ../patch.sh
+  #     - name: "Build"
+  #       shell: cmd
+  #       run: |
+  #         cd wezterm
+  #         PATH C:\Strawberry\perl\bin;%PATH%
+  #         cargo build --all --release
+  #     - name: "Package"
+  #       shell: bash
+  #       run: |
+  #         cd wezterm
+  #         bash ci/deploy.sh
+  #     - name: "Upload artifact"
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: "windows"
+  #         path: |
+  #           wezterm/WezTerm-*.zip
+  #           wezterm/WezTerm-*.exe
 
   # macos_build:
   #   name: macOS Build
