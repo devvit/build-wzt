@@ -28,13 +28,18 @@ jobs:
           cd wezterm
           PATH C:\Strawberry\perl\bin;%PATH%
           cargo build --all --release
+      - name: "Package"
+        shell: bash
+        run: |
+          cd wezterm
+          bash ci/deploy.sh
       - name: "Upload artifact"
         uses: actions/upload-artifact@v3
         with:
           name: "windows"
           path: |
-            wezterm\\WezTerm-*.zip
-            wezterm\\WezTerm-*.exe
+            wezterm/WezTerm-*.zip
+            wezterm/WezTerm-*.exe
 
   # macos_build:
   #   name: macOS Build
