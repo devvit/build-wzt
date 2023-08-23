@@ -31,7 +31,7 @@ jobs:
       - name: "Upload artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: "ubuntu-${{ env.folder_name }}"
+          name: "ubuntu-${{ env.version }}"
           path: |
             wezterm/wezterm-*.deb
             wezterm/wezterm-*.xz
@@ -70,7 +70,7 @@ jobs:
       - name: "Upload artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: "windows-${{ env.folder_name }}"
+          name: "windows-${{ env.version }}"
           path: |
             wezterm/WezTerm-*.zip
             wezterm/WezTerm-*.exe
@@ -102,5 +102,5 @@ jobs:
       - name: "Upload artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: "macos-${{ env.folder_name }}"
+          name: "macos-${{ env.version }}"
           path: "wezterm/WezTerm-*.zip"
