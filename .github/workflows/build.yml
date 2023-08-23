@@ -27,10 +27,13 @@ jobs:
           bash ci/deploy.sh
           bash ci/source-archive.sh
           bash ci/appimage.sh
+      - name: Set Name Variables
+        run: |
+          echo "version=$(git describe)" >> $GITHUB_ENV
       - name: "Upload artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: "ubuntu"
+          name: "ubuntu-${{ env.folder_name }}"
           path: |
             wezterm/wezterm-*.deb
             wezterm/wezterm-*.xz
@@ -65,10 +68,13 @@ jobs:
         run: |
           cd wezterm
           bash ci/deploy.sh
+      - name: Set Name Variables
+        run: |
+          echo "version=$(git describe)" >> $GITHUB_ENV
       - name: "Upload artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: "windows"
+          name: "windows-${{ env.folder_name }}"
           path: |
             wezterm/WezTerm-*.zip
             wezterm/WezTerm-*.exe
@@ -96,8 +102,11 @@ jobs:
           cargo build --target x86_64-apple-darwin --all --release
           cargo build --target aarch64-apple-darwin --all --release
           bash ci/deploy.sh
+      - name: Set Name Variables
+        run: |
+          echo "version=$(git describe)" >> $GITHUB_ENV
       - name: "Upload artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: "macos"
+          name: "macos-${{ env.folder_name }}"
           path: "wezterm/WezTerm-*.zip"
