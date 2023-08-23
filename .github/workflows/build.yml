@@ -21,7 +21,6 @@ jobs:
           sudo apt-get install -y fuse
           git clone --recursive https://github.com/wez/wezterm
           cd wezterm
-          echo "version=$(git describe)" >> $GITHUB_ENV
           bash ../patch.sh
           env CI=yes PATH=$PATH ./get-deps
           cargo build --all --release
@@ -30,6 +29,9 @@ jobs:
           bash ci/appimage.sh
       - name: "Upload artifact"
         uses: actions/upload-artifact@v3
+        run: |
+          cd wezterm
+          echo "version=$(git describe)" >> $GITHUB_ENV
         with:
           name: "linux-${{ env.version }}"
           path: |
