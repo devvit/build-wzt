@@ -21,7 +21,7 @@ jobs:
           sudo apt-get install -y fuse
           git clone --recursive https://github.com/wez/wezterm
           cd wezterm
-          echo "version=1.2.3" >> $GITHUB_ENV
+          echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           bash ../patch.sh
           env CI=yes PATH=$PATH ./get-deps
           cargo build --all --release
@@ -65,12 +65,12 @@ jobs:
         shell: bash
         run: |
           cd wezterm
-          echo "version=$(git describe)" >> $GITHUB_ENV
+          echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           bash ci/deploy.sh
       - name: "Upload artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: "windows-${{ env.version }}"
+          name: windows-${{ env.version }}
           path: |
             wezterm/WezTerm-*.zip
             wezterm/WezTerm-*.exe
@@ -93,7 +93,7 @@ jobs:
         run: |
           git clone --recursive https://github.com/wez/wezterm
           cd wezterm
-          echo "version=$(git describe)" >> $GITHUB_ENV
+          echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           bash ../patch.sh
           env CI=yes PATH=$PATH ./get-deps
           cargo build --target x86_64-apple-darwin --all --release
@@ -102,5 +102,5 @@ jobs:
       - name: "Upload artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: "macos-${{ env.version }}"
+          name: macos-${{ env.version }}
           path: "wezterm/WezTerm-*.zip"
