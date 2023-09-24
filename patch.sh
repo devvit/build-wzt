@@ -1,15 +1,18 @@
 #
 
+curl -fsSL -JO https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip
+unzip -o *ubuntu-font-family*.zip
+
 curl -fsSL -JO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/UbuntuMono.zip
 unzip -o UbuntuMono.zip
-cp *.ttf ./assets/fonts/
 
 curl -fsSL -JO https://phoenixnap.dl.sourceforge.net/project/wqy/wqy-microhei/0.2.0-beta/wqy-microhei-0.2.0-beta.tar.gz
 curl -fsSL -JO https://phoenixnap.dl.sourceforge.net/project/wqy/wqy-microhei-lite/0.2.0-beta/wqy-microhei-lite-0.2.0-beta.tar.gz
 tar -xf wqy-microhei-0.2.0-beta.tar.gz
 tar -xf wqy-microhei-lite-0.2.0-beta.tar.gz
-cp */*.ttc ./
-cp *.ttc ./assets/fonts/
+
+cp */*.ttc */*.ttf ./
+cp *.ttc *.ttf ./assets/fonts/
 
 for f in $(ls *.ttf *.ttc); do
     perl -pi.bak -e "s/font\!\(\"..\/..\/assets\/fonts\/NotoColorEmoji.ttf\"\)/font\!\(\"..\/..\/assets\/fonts\/NotoColorEmoji.ttf\"\),font\!\(\"..\/..\/assets\/fonts\/$f\"\)/g" wezterm-font/src/parser.rs
