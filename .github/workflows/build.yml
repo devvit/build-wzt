@@ -6,74 +6,74 @@ on:
     - cron: '0 0 * * 0'
 
 jobs:
-  # linux64_build:
-  #   name: Linux x86_64 Build
-  #   runs-on: "ubuntu-latest"
-  #   steps:
-  #     - name: "checkout repo"
-  #       uses: actions/checkout@v3
-  #     - name: "Install Rust"
-  #       uses: dtolnay/rust-toolchain@stable
-  #     - name: "Build"
-  #       shell: bash
-  #       run: |
-  #         sudo apt-get update
-  #         sudo apt-get install -y fuse
-  #         git clone --recursive https://github.com/wez/wezterm
-  #         cd wezterm
-  #         echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-  #         bash ../patch.sh
-  #         env CI=yes PATH=$PATH ./get-deps
-  #         cargo build --all --release
-  #         bash ci/deploy.sh
-  #         bash ci/source-archive.sh
-  #         bash ci/appimage.sh
-  #     - name: "Upload artifact"
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: linux-${{ env.version }}
-  #         path: |
-  #           wezterm/wezterm-*.deb
-  #           wezterm/wezterm-*.xz
-  #           wezterm/*src.tar.gz
-  #           wezterm/*.AppImage
-  #           wezterm/*.zsync
+  linux64_build:
+    name: Linux x86_64 Build
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "checkout repo"
+        uses: actions/checkout@v3
+      - name: "Install Rust"
+        uses: dtolnay/rust-toolchain@stable
+      - name: "Build"
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fuse
+          git clone --recursive https://github.com/wez/wezterm
+          cd wezterm
+          echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          bash ../patch.sh
+          env CI=yes PATH=$PATH ./get-deps
+          cargo build --all --release
+          bash ci/deploy.sh
+          bash ci/source-archive.sh
+          bash ci/appimage.sh
+      - name: "Upload artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-${{ env.version }}
+          path: |
+            wezterm/wezterm-*.deb
+            wezterm/wezterm-*.xz
+            wezterm/*src.tar.gz
+            wezterm/*.AppImage
+            wezterm/*.zsync
 
-  # windows64_build:
-  #   name: Windows x86_64 Build
-  #   runs-on: windows-latest
-  #   steps:
-  #     - name: "checkout repo"
-  #       uses: actions/checkout@v3
-  #     - name: "Install Rust"
-  #       uses: dtolnay/rust-toolchain@stable
-  #       with:
-  #         target: "x86_64-pc-windows-msvc"
-  #     - name: "Prebuild"
-  #       shell: bash
-  #       run: |
-  #         git clone --recursive https://github.com/wez/wezterm
-  #         cd wezterm
-  #         bash ../patch.sh
-  #     - name: "Build"
-  #       shell: cmd
-  #       run: |
-  #         cd wezterm
-  #         PATH C:\Strawberry\perl\bin;%PATH%
-  #         cargo build --all --release
-  #     - name: "Package"
-  #       shell: bash
-  #       run: |
-  #         cd wezterm
-  #         echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-  #         bash ci/deploy.sh
-  #     - name: "Upload artifact"
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: windows-${{ env.version }}
-  #         path: |
-  #           wezterm/WezTerm-*.zip
-  #           wezterm/WezTerm-*.exe
+  windows64_build:
+    name: Windows x86_64 Build
+    runs-on: windows-latest
+    steps:
+      - name: "checkout repo"
+        uses: actions/checkout@v3
+      - name: "Install Rust"
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          target: "x86_64-pc-windows-msvc"
+      - name: "Prebuild"
+        shell: bash
+        run: |
+          git clone --recursive https://github.com/wez/wezterm
+          cd wezterm
+          bash ../patch.sh
+      - name: "Build"
+        shell: cmd
+        run: |
+          cd wezterm
+          PATH C:\Strawberry\perl\bin;%PATH%
+          cargo build --all --release
+      - name: "Package"
+        shell: bash
+        run: |
+          cd wezterm
+          echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          bash ci/deploy.sh
+      - name: "Upload artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-${{ env.version }}
+          path: |
+            wezterm/WezTerm-*.zip
+            wezterm/WezTerm-*.exe
 
   macos_build:
     name: macOS Build
