@@ -4,7 +4,14 @@ curl -fsSL -JO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/
 unzip -o UbuntuMono.zip
 cp *.ttf ./assets/fonts/
 
-for f in $(ls *.ttf); do
+curl -fsSL -JO https://phoenixnap.dl.sourceforge.net/project/wqy/wqy-microhei/0.2.0-beta/wqy-microhei-0.2.0-beta.tar.gz
+curl -fsSL -JO https://phoenixnap.dl.sourceforge.net/project/wqy/wqy-microhei-lite/0.2.0-beta/wqy-microhei-lite-0.2.0-beta.tar.gz
+tar -xf wqy-microhei-0.2.0-beta.tar.gz
+tar -xf wqy-microhei-lite-0.2.0-beta.tar.gz
+cp */*.ttc ./
+cp *.ttc ./assets/fonts/
+
+for f in $(ls *.ttf *.ttc); do
     perl -pi.bak -e "s/font\!\(\"..\/..\/assets\/fonts\/NotoColorEmoji.ttf\"\)/font\!\(\"..\/..\/assets\/fonts\/NotoColorEmoji.ttf\"\),font\!\(\"..\/..\/assets\/fonts\/$f\"\)/g" wezterm-font/src/parser.rs
 done
 
