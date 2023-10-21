@@ -11,7 +11,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "checkout repo"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: "Install Rust"
         uses: dtolnay/rust-toolchain@stable
       - name: "Build"
@@ -44,7 +44,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: "checkout repo"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: "Install Rust"
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -82,7 +82,7 @@ jobs:
       MACOSX_DEPLOYMENT_TARGET: "10.9"
     steps:
       - name: "checkout repo"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: "Install Rust"
         uses: dtolnay/rust-toolchain@stable
       - name: "Install Rust (ARM)"
