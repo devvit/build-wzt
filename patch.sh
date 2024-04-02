@@ -8,7 +8,7 @@ unzip -o UbuntuMono.zip
 
 curl -fsSL -JO 'https://sourceforge.net/projects/wqy/files/wqy-microhei/0.2.0-beta/wqy-microhei-0.2.0-beta.tar.gz'
 curl -fsSL -JO 'https://sourceforge.net/projects/wqy/files/wqy-microhei-lite/0.2.0-beta/wqy-microhei-lite-0.2.0-beta.tar.gz'
-curl -fsSL -JO 'https://downloads.sourceforge.net/project/wqy/wqy-zenhei/0.9.45%20%28Fighting-state%20RC1%29/wqy-zenhei-0.9.45.tar.gz'
+curl -fsSL -JO 'https://sourceforge.net/projects/wqy/files/wqy-zenhei/0.9.45%20%28Fighting-state%20RC1%29/wqy-zenhei-0.9.45.tar.gz'
 tar -xf wqy-microhei-0.2.0-beta.tar.gz
 tar -xf wqy-microhei-lite-0.2.0-beta.tar.gz
 tar -xf wqy-zenhei-0.9.45.tar.gz
