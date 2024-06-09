@@ -3,7 +3,7 @@
 curl -fsSL -JO https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip
 unzip -o *ubuntu-font-family*.zip
 
-curl -fsSL -JO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/UbuntuMono.zip
+curl -fsSL -JO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/UbuntuMono.zip
 unzip -o UbuntuMono.zip
 
 curl -fsSL -JO 'https://sourceforge.net/projects/wqy/files/wqy-microhei/0.2.0-beta/wqy-microhei-0.2.0-beta.tar.gz'
