@@ -1,7 +1,7 @@
 name: Build
 
 on:
-  push:
+  # push:
   schedule:
     - cron: '0 0 15 * *'
 
@@ -19,7 +19,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y fuse
-          git clone --recursive https://github.com/wez/wezterm
+          git clone --depth 1 --recursive https://github.com/wez/wezterm
           cd wezterm
           echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           bash ../patch.sh
@@ -52,7 +52,7 @@ jobs:
       - name: "Prebuild"
         shell: bash
         run: |
-          git clone --recursive https://github.com/wez/wezterm
+          git clone --depth 1 --recursive https://github.com/wez/wezterm
           cd wezterm
           bash ../patch.sh
       - name: "Build"
@@ -91,7 +91,7 @@ jobs:
       - name: "Build"
         shell: bash
         run: |
-          git clone --recursive https://github.com/wez/wezterm
+          git clone --depth 1 --recursive https://github.com/wez/wezterm
           cd wezterm
           echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           bash ../patch.sh
