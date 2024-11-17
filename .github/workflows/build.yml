@@ -1,7 +1,7 @@
 name: Build
 
 on:
-  push:
+  # push:
   schedule:
     - cron: '0 0 15 * *'
 
@@ -29,7 +29,7 @@ jobs:
           bash ci/source-archive.sh
           bash ci/appimage.sh
       - name: "Upload artifact"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: linux-${{ env.version }}
           path: |
@@ -68,7 +68,7 @@ jobs:
           echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           bash ci/deploy.sh
       - name: "Upload artifact"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: windows-${{ env.version }}
           path: |
@@ -102,7 +102,7 @@ jobs:
           cargo build --target aarch64-apple-darwin --all --release
           bash ci/deploy.sh
       - name: "Upload artifact"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: macos-${{ env.version }}
           path: "wezterm/WezTerm-*.zip"
