@@ -3,7 +3,7 @@ name: Build
 on:
   # push:
   schedule:
-    - cron: '0 0 15 * *'
+    - cron: '0 0 11 * *'
 
 jobs:
   linux64_build:
