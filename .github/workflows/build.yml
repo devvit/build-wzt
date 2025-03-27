@@ -19,7 +19,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y fuse
-          git clone --depth 1 --recursive --shallow-submodules https://github.com/wez/wezterm
+          git clone --depth 1 --recursive --shallow-submodules https://github.com/wezterm/wezterm
           cd wezterm
           echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           bash ../patch.sh
@@ -52,7 +52,7 @@ jobs:
       - name: "Prebuild"
         shell: bash
         run: |
-          git clone --depth 1 --recursive --shallow-submodules https://github.com/wez/wezterm
+          git clone --depth 1 --recursive --shallow-submodules https://github.com/wezterm/wezterm
           cd wezterm
           bash ../patch.sh
       - name: "Build"
@@ -93,7 +93,7 @@ jobs:
       - name: "Build"
         shell: bash
         run: |
-          git clone --depth 1 --recursive --shallow-submodules https://github.com/wez/wezterm
+          git clone --depth 1 --recursive --shallow-submodules https://github.com/wezterm/wezterm
           cd wezterm
           echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           bash ../patch.sh
