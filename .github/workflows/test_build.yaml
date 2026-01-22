@@ -17,6 +17,9 @@ jobs:
       - name: "Build"
         run: |
           apt-get update
+          apt-get install unzip
+          rustup target add aarch64-apple-darwin
+          rustup target add x86_64-apple-darwin
           git clone --depth 1 --recursive --shallow-submodules https://github.com/wezterm/wezterm
           cd wezterm
           echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
