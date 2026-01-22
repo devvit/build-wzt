@@ -11,18 +11,21 @@ jobs:
     runs-on: "ubuntu-latest"
     container:
       image: ghcr.io/joseluisq/rust-linux-darwin-builder:1
+      volumes:
+        - ${{ github.workspace }}:/root/src
     steps:
       - name: "checkout repo"
         uses: actions/checkout@v4
       - name: "Build"
-        shell: bash
         run: |
+          sudo apt-get update
           git clone --depth 1 --recursive --shallow-submodules https://github.com/wezterm/wezterm
           cd wezterm
           echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           bash ../patch.sh
           env CI=yes PATH=$PATH ./get-deps
           cargo build --target x86_64-apple-darwin --all --release
+          cargo build --target aarch64-apple-darwin --all --release
           bash ci/deploy.sh
       - name: "Upload artifact"
         uses: actions/upload-artifact@v4
