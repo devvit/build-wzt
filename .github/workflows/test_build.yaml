@@ -11,13 +11,12 @@ jobs:
     runs-on: "ubuntu-latest"
     container:
       image: ghcr.io/joseluisq/rust-linux-darwin-builder:1
-      options: --user root
     steps:
       - name: "checkout repo"
         uses: actions/checkout@v4
       - name: "Build"
         run: |
-          sudo apt-get update
+          apt-get update
           git clone --depth 1 --recursive --shallow-submodules https://github.com/wezterm/wezterm
           cd wezterm
           echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
