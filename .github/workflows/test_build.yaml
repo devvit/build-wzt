@@ -2,8 +2,10 @@ name: Test build
 
 on:
   push:
-  schedule:
-    - cron: '0 0 11 * *'
+    paths:
+      - '**.js'
+  # schedule:
+  #   - cron: '0 0 11 * *'
 
 jobs:
   macos_build:
