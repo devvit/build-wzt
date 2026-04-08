@@ -1,0 +1,109 @@
+name: Build R
+
+on:
+  push:
+  schedule:
+    - cron: '0 0 11 * *'
+
+jobs:
+  # linux64_build:
+  #   name: Linux x86_64 Build
+  #   runs-on: "ubuntu-latest"
+  #   steps:
+  #     - name: "checkout repo"
+  #       uses: actions/checkout@v4
+  #     - name: "Install Rust"
+  #       uses: dtolnay/rust-toolchain@stable
+  #     - name: "Build"
+  #       shell: bash
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y fuse
+  #         git clone --depth 1 --recursive --shallow-submodules https://github.com/wezterm/wezterm
+  #         cd wezterm
+  #         echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+  #         bash ../r.sh
+  #         env CI=yes PATH=$PATH ./get-deps
+  #         cargo build --all --release
+  #         bash ci/deploy.sh
+  #         bash ci/source-archive.sh
+  #         bash ci/appimage.sh
+  #     - name: "Upload artifact"
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: linux-${{ env.version }}
+  #         path: |
+  #           wezterm/wezterm-*.deb
+  #           wezterm/wezterm-*.xz
+  #           wezterm/*src.tar.gz
+  #           wezterm/*.AppImage
+  #           wezterm/*.zsync
+  #         retention-days: 3
+
+  # windows64_build:
+  #   name: Windows x86_64 Build
+  #   runs-on: windows-latest
+  #   steps:
+  #     - name: "checkout repo"
+  #       uses: actions/checkout@v4
+  #     - name: "Install Rust"
+  #       uses: dtolnay/rust-toolchain@stable
+  #       with:
+  #         target: "x86_64-pc-windows-msvc"
+  #     - name: "Prebuild"
+  #       shell: bash
+  #       run: |
+  #         git clone --depth 1 --recursive --shallow-submodules https://github.com/wezterm/wezterm
+  #         cd wezterm
+  #         bash ../r.sh
+  #     - name: "Build"
+  #       shell: cmd
+  #       run: |
+  #         cd wezterm
+  #         PATH C:\Strawberry\perl\bin;%PATH%
+  #         cargo build --all --release
+  #     - name: "Package"
+  #       shell: bash
+  #       run: |
+  #         cd wezterm
+  #         echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+  #         bash ci/deploy.sh
+  #     - name: "Upload artifact"
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: windows-${{ env.version }}
+  #         path: |
+  #           wezterm/WezTerm-*.zip
+  #           wezterm/WezTerm-*.exe
+  #         retention-days: 3
+
+  macos_build:
+    name: macOS Build
+    runs-on: "macos-latest"
+    env:
+      MACOSX_DEPLOYMENT_TARGET: "10.9"
+    steps:
+      - name: "checkout repo"
+        uses: actions/checkout@v4
+      - name: "Install Rust"
+        uses: dtolnay/rust-toolchain@stable
+      - name: "Install Rust (ARM)"
+        shell: bash
+        run: |
+          rustup target add aarch64-apple-darwin
+          rustup target add x86_64-apple-darwin
+      - name: "Build"
+        shell: bash
+        run: |
+          git clone --depth 1 --recursive --shallow-submodules https://github.com/raphamorim/rio
+          cd rio
+          echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          bash ../r.sh
+          make release-macos
+      - name: "Upload artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-${{ env.version }}
+          path: "rio/release"
+          retention-days: 3
+

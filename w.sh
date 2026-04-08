@@ -1,5 +1,7 @@
 #
 
+bash ../dl.sh
+
 cp */*.ttc */*.ttf ./
 cp *.ttc *.ttf ./assets/fonts/
 
