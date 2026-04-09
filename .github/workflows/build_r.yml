@@ -1,44 +1,36 @@
 name: Build R
 
 on:
-  push:
+  # push:
   schedule:
     - cron: '0 0 11 * *'
 
 jobs:
-  # linux64_build:
-  #   name: Linux x86_64 Build
-  #   runs-on: "ubuntu-latest"
-  #   steps:
-  #     - name: "checkout repo"
-  #       uses: actions/checkout@v4
-  #     - name: "Install Rust"
-  #       uses: dtolnay/rust-toolchain@stable
-  #     - name: "Build"
-  #       shell: bash
-  #       run: |
-  #         sudo apt-get update
-  #         sudo apt-get install -y fuse
-  #         git clone --depth 1 --recursive --shallow-submodule https://github.com/wezterm/wezterm
-  #         cd wezterm
-  #         echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-  #         bash ../r.sh
-  #         env CI=yes PATH=$PATH ./get-deps
-  #         cargo build --all --release
-  #         bash ci/deploy.sh
-  #         bash ci/source-archive.sh
-  #         bash ci/appimage.sh
-  #     - name: "Upload artifact"
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: linux-${{ env.version }}
-  #         path: |
-  #           wezterm/wezterm-*.deb
-  #           wezterm/wezterm-*.xz
-  #           wezterm/*src.tar.gz
-  #           wezterm/*.AppImage
-  #           wezterm/*.zsync
-  #         retention-days: 3
+  linux64_build:
+    name: Linux x86_64 Build
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "checkout repo"
+        uses: actions/checkout@v4
+      - name: "Install Rust"
+        uses: dtolnay/rust-toolchain@stable
+      - name: "Build"
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3 libwayland-dev
+          git clone --depth 1 --recursive --shallow-submodule https://github.com/raphamorim/rio
+          cd rio
+          echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          bash ../r.sh
+          cargo build -p rioterm --release
+      - name: "Upload artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-${{ env.version }}
+          path: |
+            target/release/rio
+          retention-days: 3
 
   windows64_build:
     name: Windows x86_64 Build
