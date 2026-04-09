@@ -19,7 +19,7 @@ jobs:
   #       run: |
   #         sudo apt-get update
   #         sudo apt-get install -y fuse
-  #         git clone --depth 1 --recursive --shallow-submodules https://github.com/wezterm/wezterm
+  #         git clone --depth 1 --recursive --shallow-submodule https://github.com/wezterm/wezterm
   #         cd wezterm
   #         echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
   #         bash ../r.sh
@@ -40,42 +40,36 @@ jobs:
   #           wezterm/*.zsync
   #         retention-days: 3
 
-  # windows64_build:
-  #   name: Windows x86_64 Build
-  #   runs-on: windows-latest
-  #   steps:
-  #     - name: "checkout repo"
-  #       uses: actions/checkout@v4
-  #     - name: "Install Rust"
-  #       uses: dtolnay/rust-toolchain@stable
-  #       with:
-  #         target: "x86_64-pc-windows-msvc"
-  #     - name: "Prebuild"
-  #       shell: bash
-  #       run: |
-  #         git clone --depth 1 --recursive --shallow-submodules https://github.com/wezterm/wezterm
-  #         cd wezterm
-  #         bash ../r.sh
-  #     - name: "Build"
-  #       shell: cmd
-  #       run: |
-  #         cd wezterm
-  #         PATH C:\Strawberry\perl\bin;%PATH%
-  #         cargo build --all --release
-  #     - name: "Package"
-  #       shell: bash
-  #       run: |
-  #         cd wezterm
-  #         echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-  #         bash ci/deploy.sh
-  #     - name: "Upload artifact"
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: windows-${{ env.version }}
-  #         path: |
-  #           wezterm/WezTerm-*.zip
-  #           wezterm/WezTerm-*.exe
-  #         retention-days: 3
+  windows64_build:
+    name: Windows x86_64 Build
+    runs-on: windows-latest
+    steps:
+      - name: "checkout repo"
+        uses: actions/checkout@v4
+      - name: "Install Rust"
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          target: "x86_64-pc-windows-msvc"
+      - name: "Build"
+        shell: cmd
+        run: |
+          git clone --depth 1 --recursive --shallow-submodule https://github.com/raphamorim/rio
+          cd rio
+          PATH C:\Strawberry\perl\bin;%PATH%
+          bash ../r.sh
+          cargo build -p rioterm --release
+      - name: "Package"
+        shell: bash
+        run: |
+          cd rio
+          echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - name: "Upload artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-${{ env.version }}
+          path: |
+            rio/target/release/*.exe
+          retention-days: 3
 
   macos_build:
     name: macOS Build
@@ -93,7 +87,7 @@ jobs:
       - name: "Build"
         shell: bash
         run: |
-          git clone --depth 1 --recursive --shallow-submodules https://github.com/raphamorim/rio
+          git clone --depth 1 --recursive --shallow-submodule https://github.com/raphamorim/rio
           cd rio
           echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           bash ../r.sh
