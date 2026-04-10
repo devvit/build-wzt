@@ -19,7 +19,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3 libwayland-dev
-          git clone --depth 1 --recursive --shallow-submodule https://github.com/raphamorim/rio
+          git clone --depth 1 --recursive --shallow-submodules https://github.com/raphamorim/rio
           cd rio
           echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           bash ../r.sh
@@ -45,7 +45,7 @@ jobs:
       - name: "Build"
         shell: cmd
         run: |
-          git clone --depth 1 --recursive --shallow-submodule https://github.com/raphamorim/rio
+          git clone --depth 1 --recursive --shallow-submodules https://github.com/raphamorim/rio
           cd rio
           PATH C:\Strawberry\perl\bin;%PATH%
           bash ../r.sh
@@ -79,7 +79,7 @@ jobs:
       - name: "Build"
         shell: bash
         run: |
-          git clone --depth 1 --recursive --shallow-submodule https://github.com/raphamorim/rio
+          git clone --depth 1 --recursive --shallow-submodules https://github.com/raphamorim/rio
           cd rio
           echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           bash ../r.sh
