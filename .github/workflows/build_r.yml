@@ -29,7 +29,7 @@ jobs:
         with:
           name: linux-${{ env.version }}
           path: |
-            target/release/rio
+            rio/target/release/rio
           retention-days: 3
 
   windows64_build:
